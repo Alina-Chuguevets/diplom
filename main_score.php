@@ -37,7 +37,11 @@
             echo $status;
         ?>
     </div>
-    <form action="./main_setting.php.php" method="post">
+    <div>
+        <a href="./student_testing.php">Тестирование</a>
+        <a href="./student_score.php">Результат тестирования</a>
+    </div>
+    <form action="./student_testing.php" method="post">
         <ul>
             <input name="status" value="Данные отправлены">
             <?php
