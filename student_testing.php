@@ -1,5 +1,5 @@
 <?php
-    $dataCookie = 'test'
+    $dataCookie = 'test';
     if($_COOKIE['auth'] !== $dataCookie){
         die('Авторизуйтесь на <a href="./auth.php">сайте</a>')
     }
