@@ -3,6 +3,7 @@
 function print_arr ($arr){
     echo'<pre>' . print_r($arr,true) . '</pre>';
 }
+
 //получение списка тестов
 function get_tests(){
     global $db;
@@ -16,6 +17,7 @@ function get_tests(){
     return $data;
 
 }
+
 //получение данных теста
 function get_test_data($test_id){
     if( !$test_id ) return; //если ложь, то прекращаем работу функции

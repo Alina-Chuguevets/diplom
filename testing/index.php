@@ -8,22 +8,15 @@ if(isset($_POST['test'])){
     $test = (int) $_POST['test'];
     unset ($_POST['test']); //удаляем из массива post номер теста
     $result = get_answers($test);//получение ответов
-    //print_r($_POST);
-    //print_r($result);
 
     //данные теста
     $test_all_data = get_test_data($test);
     // массив вопросы-ответы, ответы, ответы пользователя
     $test_all_data_result = get_test_data_result($test_all_data, $result, $_POST);
-    //echo $test_all_data_result;
-    //print_r($_POST);
-    //print_r($test_all_data_result);
     echo print_result($test_all_data_result);
     die;
 }
    
-
-
 //список тестов
 $tests = get_tests();
 if(isset ($_GET['test'])){
