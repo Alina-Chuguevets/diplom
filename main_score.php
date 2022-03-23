@@ -72,10 +72,14 @@ $userTests = $db->getDataTest($userId);
         <div>
              <ul>
                 <?php
+                    if($userTests !== null){
                     foreach($userTests as $test){
                         ?>
                             <li>Дата: <?= $test['date'] ?> Результат:  <?= $test['score'] ?></li>
                         <?php
+                    }
+                    } else {
+                        echo "<span>Ученик не прошел ни одного теста</span>";
                     }
                 ?>
             </ul>
