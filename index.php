@@ -51,15 +51,16 @@ if($_POST['postAuth'] !== NULL){
 </head>
 
 <body>
-	<header class="header"></header>
 	<div class="container">
-		<h3>Авторизуйтесь</h3>
-		<span><?= $status ?></span>
-		<form action="" class="authorize-form" method="post">
-			<input class="authorize-field" name="login" type="text" value="" placeholder="Логин">
-			<input class="authorize-field" name="password" type="password" value="" placeholder="Пароль">
-			<input class="button button-submit" type="submit" value="Отправить" name="postAuth">
+		<div class="signin">
+			<form action="" class="signin__form" method="post">
+			<h1 class="signin__title">Авторизация</h1>
+			<span><?= $status ?></span>
+			<input class="signin__input" name="login" type="text" value="" placeholder="Логин">
+			<input class="signin__input" name="password" type="password" value="" placeholder="Пароль">
+			<input class="signin__submit" type="submit" value="Отправить" name="postAuth">
 		</form>
+		</div>
 	</div>
 </body>
 
