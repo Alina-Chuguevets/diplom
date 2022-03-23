@@ -4,8 +4,23 @@ include_once './functions.php';
 $db = new dbAPI();
 $db->init();
 
-$isOpenTest = $db->getStatusTest();
 $userParams = $db->getUserConfig('login', 'password');
+$isOpenTest = $userParams['isopentest'];
+
+// Если отправили тест
+if($_POST['postTest'] !== NULL){
+    $score = 123;
+    $db->setDataTest($userParams['id'], 12345, $score);
+    $isOpenTest = 0;
+}
+
+// Роли:
+// 0 - ученик
+// 1 - психолог
+
+if($userParams['type'] !== '0'){
+    die('Нет доступа к этой странице');
+};
 
 if($_COOKIE['auth'] !== $userParams['token']){
     die('Авторизуйтесь на <a href="./index.php">сайте</a>');
@@ -72,20 +87,18 @@ $listQuestions = [
             $countQuestions = 1;
             foreach ($listQuestions as $question) {
             ?>
-                <div class="questionRow">
-                    <div class="question">
-                        <?= $question ?>
-                    </div>
-                    <input name="answer<?= $countQuestions ?>" form="questionsForm" class="answer answer-yes" type="radio" value="1">Да
-                    <input name="answer<?= $countQuestions++ ?>" form="questionsForm" class="answer answer-no" type="radio" value="0">Нет
-                </div>
-            <?php
-            }
-            ?>
                 <form id="questionsForm" action="./student_testing.php" method="post">
+                    <div class="questionRow">
+                        <div class="question">
+                            <?= $question ?>
+                        </div>
+                        <input name="answer<?= $countQuestions ?>" form="questionsForm" class="answer answer-yes" type="radio" value="1">Да
+                        <input name="answer<?= $countQuestions++ ?>" form="questionsForm" class="answer answer-no" type="radio" value="0">Нет
+                    </div>
+                    <?php } ?>
                     <input type="hidden" value="0">
                     <input type="hidden" name="status" value="Данные отправлены">
-                    <input class="button button-submit" type="submit" name="postTestingData" value="Отправить тест">
+                    <input class="button button-submit" type="submit" name="postTest" value="Отправить тест">
                 </form>
             <?php
         } else {

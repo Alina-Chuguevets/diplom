@@ -36,12 +36,17 @@ class dbAPI{
         }
         return (bool)$data[0]['value'];
     }
+
+    /**
+     * Добавление записи тестов
+     */
+    public function setDataTest($user, $date, $score){
+        $sql = "INSERT INTO tests (users, date, score) VALUES (". $user . ", " . $date . ", " . $score . ")";
+        $res = mysqli_query($this->$db, $sql);
+        $sql = "UPDATE users SET isopentest = 0 WHERE id = '". $user ."'";
+        $res = mysqli_query($this->$db, $sql);
+    }
 }
-
-
-
-
-
 
 //вывод массива 
 function print_arr ($arr){
