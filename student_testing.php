@@ -1,10 +1,16 @@
 <?php
-// $dataCookie = 'test';
-// if($_COOKIE['auth'] !== $dataCookie){
-//     die('Авторизуйтесь на <a href="./auth.php">сайте</a>');
-// }; 
+include_once './functions.php';
 
-$isOpenTest = true;
+$db = new dbAPI();
+$db->init();
+
+$isOpenTest = $db->getStatusTest();
+$userParams = $db->getUserConfig('login', 'password');
+
+if($_COOKIE['auth'] !== $userParams['token']){
+    die('Авторизуйтесь на <a href="./index.php">сайте</a>');
+}; 
+
 $listQuestions = [
     'Вы испытываете эйфорию, хорошее настроение когда играете в компьютерные игры?',
     'В последнее время требуется все больше и больше времени, чтобы достичь этого состояния?',
@@ -27,8 +33,6 @@ $listQuestions = [
     'Для того чтобы больше побыть в Интернете, вы прекращали мыться, чистить зубы или бриться?',
     'С того времени, как вы используете Интернет или играете в компьютерные игры, у вас появились нарушения сна: долгое засыпание, бессонница, беспокойный сон?',
 ];
-
-// $status = $_POST['status'];
 ?>
 
 <!DOCTYPE html>
@@ -50,7 +54,7 @@ $listQuestions = [
     </header>
     <div class="container">
         <div class="headline">
-            <span class="info">Иванов Иван(5Б)</span>
+            <span class="info"><?= $userParams['name'] ?>(<?= $userParams['class'] ?>)</span>
         </div>
         <div>
             <div class="buttonsBlock">
@@ -59,27 +63,42 @@ $listQuestions = [
             </div>
         </div>
         <?php
-        $countQuestions = 1;
-        foreach ($listQuestions as $question) {
-        ?>
-            <div class="questionRow">
-                <div class="question">
-                    <?= $question ?>
+        if($isOpenTest) {
+            $countQuestions = 1;
+            foreach ($listQuestions as $question) {
+            ?>
+                <div class="questionRow">
+                    <div class="question">
+                        <?= $question ?>
+                    </div>
+                    <input name="answer<?= $countQuestions ?>" form="questionsForm" class="answer answer-yes" type="radio" value="1">Да
+                    <input name="answer<?= $countQuestions++ ?>" form="questionsForm" class="answer answer-no" type="radio" value="0">Нет
                 </div>
+<<<<<<< HEAD
                 <input name="answer<?= $countQuestions ?>" form="questionsForm" class="answer answer-yes" type="radio" value="1">Да
                 <input name="answer<?= $countQuestions++ ?>" form="questionsForm" class="answer answer-no" type="radio" value="0">Нет
             </div>
         <?php
+=======
+            <?php
+            }
+            ?>
+                <form id="questionsForm" action="./student_testing.php" method="post">
+                    <input type="hidden" value="0">
+                    <input type="hidden" name="status" value="Данные отправлены">
+                    <input class="button button-submit" type="submit" name="postTestingData" value="Отправить тест">
+                </form>
+            <?php
+        } else {
+            ?>
+                <p>
+                    Прохождение теста в данный момент заблокированно
+                </p>
+            <?php
+>>>>>>> d4ae3e944ae8073c21779da426bd6d5d1d856c2f
         }
         ?>
-
-        <form id="questionsForm" action="./student_testing.php" method="post">
-            <input type="hidden" value="0">
-            <input type="hidden" name="status" value="Данные отправлены">
-            <input class="button button-submit" type="submit" name="postTestingData" value="Отправить тест">
-        </form>
     </div>
     <script src="script.js"></script>
 </body>
-
 </html>
