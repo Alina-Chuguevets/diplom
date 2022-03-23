@@ -16,8 +16,14 @@
 		<form action="" class="authorize-form">
 			<input class="authorize-field" type="text" value="" placeholder="Логин">
 			<input class="authorize-field" type="password" value="" placeholder="Пароль">
-			<input name="usertype" type="radio" class="radiobtn" value="Ученик">Ученик
-			<input name="usertype" type="radio" class="radiobtn" value="Учитель">Учитель
+			<div class="radio-block">
+				<input id="usertype" name="usertype" type="radio" class="radiobtn" value="Ученик">
+				<label for="usertype">Ученик</label>
+			</div>
+			<div class="radio-block">
+				<input id="isTeacher" name="usertype" type="radio" class="radiobtn" value="Учитель">
+				<label for="isTeacher">Учитель</label>
+			</div>
 			<input class="button button-submit" type="submit" value="Отправить">
 
 		</form>
