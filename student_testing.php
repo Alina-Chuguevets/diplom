@@ -22,9 +22,9 @@ if($userParams['type'] !== '0'){
     die('Нет доступа к этой странице');
 };
 
-if($_COOKIE['auth'] !== $userParams['token']){
+if ($_COOKIE['auth'] !== $userParams['token']) {
     die('Авторизуйтесь на <a href="./index.php">сайте</a>');
-}; 
+};
 
 $listQuestions = [
     'Вы испытываете эйфорию, хорошее настроение когда играете в компьютерные игры?',
@@ -71,11 +71,6 @@ $listQuestions = [
         <div class="headline">
             <span class="info"><?= $userParams['name'] ?>(<?= $userParams['class'] ?>)</span>
         </div>
-        <div class='statusMessage'>
-            <!-- <?php
-                    echo $status;
-                    ?> -->
-        </div>
         <div>
             <div class="buttonsBlock">
                 <a class="button button-active" href="./student_testing.php">Тестирование</a>
@@ -83,7 +78,7 @@ $listQuestions = [
             </div>
         </div>
         <?php
-        if($isOpenTest) {
+        if ($isOpenTest) {
             $countQuestions = 1;
             foreach ($listQuestions as $question) {
             ?>
@@ -102,17 +97,15 @@ $listQuestions = [
                 </form>
             <?php
         } else {
-            ?>
-                <p>
-                    Прохождение теста в данный момент заблокированно
-                </p>
-            <?php
+        ?>
+            <p>
+                Прохождение теста в данный момент заблокированно
+            </p>
+        <?php
         }
         ?>
     </div>
-    <footer class="footer">
-        <a href="#header" class="toTop">Наверх</a>
-    </footer>
     <script src="script.js"></script>
 </body>
+
 </html>

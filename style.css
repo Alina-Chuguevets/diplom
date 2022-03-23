@@ -13,6 +13,10 @@ body {
     /* overflow: hidden; */
 }
 
+h3 {
+    margin-top: 40px;
+    text-align: center;
+}
 .hide {
     display: none;
 }
@@ -25,6 +29,7 @@ body {
 }
 
 .footer {
+
     margin-top: 36px;
     text-decoration: none;
 }
@@ -47,7 +52,7 @@ body {
 }
 
 .button-submit {
-    margin-top: 10px;
+    margin: 30px 0;
     font-size: 20px;
 }
 .button-active {
@@ -104,3 +109,49 @@ body {
 .answer-no {
     background-color: red;
 }
+
+.results-list {
+    margin-top: 30px;
+}
+
+.result {
+    display: flex;
+    margin-bottom: 16px;
+    
+}
+
+.result-date,.result-score {
+    border: 1px solid black;
+    width: 50%;
+    text-align: center;
+    font-size: 20px;
+}
+
+.result-score-success {
+           background-color: rgb(70 255 0 / 30%);
+}
+
+.result-score-false {
+    background-color: rgba(255, 0, 0, 0.6);
+}
+
+.authorize-form {
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.authorize-field {
+    text-align: center;
+    width: 49%;
+    margin-bottom: 8px;
+    padding: 10px;
+}
+
+.radiobtn {
+    margin-bottom: 10px;
+}
+
+
+
