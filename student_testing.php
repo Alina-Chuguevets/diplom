@@ -4,12 +4,12 @@ include_once './functions.php';
 $db = new dbAPI();
 $db->init();
 
-$userParams = $db->getUserConfig('login', 'password');
+$userParams = $db->getUserConfigByToken($_COOKIE['auth']);
 $isOpenTest = $userParams['isopentest'];
 
 // Если отправили тест
 if($_POST['postTest'] !== NULL){
-    $score = 123;
+    $score = 10;
     $db->setDataTest($userParams['id'], 12345, $score);
     $isOpenTest = 0;
 }
@@ -17,6 +17,11 @@ if($_POST['postTest'] !== NULL){
 // Роли:
 // 0 - ученик
 // 1 - психолог
+
+if($_POST['signOut'] !== null){
+    setcookie('auth', '');   
+    die('Авторизуйтесь на <a href="./index.php">сайте</a>');
+}
 
 if($userParams['type'] !== '0'){
     die('Нет доступа к этой странице');
@@ -66,6 +71,9 @@ $listQuestions = [
         <span class="page-info">
             Тестирование
         </span>
+        <form action="./student_testing.php" method="post">
+            <input type="submit" name="signOut" value="Выход">
+        </form>
     </header>
     <div class="container">
         <div class="headline">
@@ -73,8 +81,8 @@ $listQuestions = [
         </div>
         <div>
             <div class="buttonsBlock">
-                <a class="button button-active" href="./student_testing.php">Тестирование</a>
-                <a class="button" href="./student_score.php">Результат тестирования</a>
+                <a class="button" href="./student_testing.php">Тестирование</a>
+                <a class="button button-active" href="./student_score.php">Результат тестирования</a>
             </div>
         </div>
         <?php

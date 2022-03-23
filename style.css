@@ -49,6 +49,12 @@ h3 {
     text-decoration: none;
     width: 49%;
     text-align: center;
+    transition: .2s;
+    cursor: pointer;
+}
+
+.button:hover{
+    background-color: blueviolet;
 }
 
 .button-submit {
