@@ -52,11 +52,6 @@ $listQuestions = [
         <div class="headline">
             <span class="info">Иванов Иван(5Б)</span>
         </div>
-        <div class='statusMessage'>
-            <!-- <?php
-                    echo $status;
-                    ?> -->
-        </div>
         <div>
             <div class="buttonsBlock">
                 <a class="button button-active" href="./student_testing.php">Тестирование</a>
@@ -71,10 +66,6 @@ $listQuestions = [
                 <div class="question">
                     <?= $question ?>
                 </div>
-                <!-- <div class="answer answer-yes">
-                    <input type="radio" name="" id="">
-                </div>
-                <div class="answer answer-no"></div> -->
                 <input name="answer<?= $countQuestions ?>" form="questionsForm" class="answer answer-yes" type="radio" value="1">Да
                 <input name="answer<?= $countQuestions++ ?>" form="questionsForm" class="answer answer-no" type="radio" value="0">Нет
             </div>
@@ -88,9 +79,6 @@ $listQuestions = [
             <input class="button button-submit" type="submit" name="postTestingData" value="Отправить тест">
         </form>
     </div>
-    <footer class="footer">
-        <a href="#header" class="toTop">Наверх</a>
-    </footer>
     <script src="script.js"></script>
 </body>
 
