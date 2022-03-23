@@ -7,9 +7,9 @@ $db->init();
 $isOpenTest = $db->getStatusTest();
 $userParams = $db->getUserConfig('login', 'password');
 
-if($_COOKIE['auth'] !== $userParams['token']){
+if ($_COOKIE['auth'] !== $userParams['token']) {
     die('Авторизуйтесь на <a href="./index.php">сайте</a>');
-}; 
+};
 
 $listQuestions = [
     'Вы испытываете эйфорию, хорошее настроение когда играете в компьютерные игры?',
@@ -63,10 +63,10 @@ $listQuestions = [
             </div>
         </div>
         <?php
-        if($isOpenTest) {
+        if ($isOpenTest) {
             $countQuestions = 1;
             foreach ($listQuestions as $question) {
-            ?>
+        ?>
                 <div class="questionRow">
                     <div class="question">
                         <?= $question ?>
@@ -74,31 +74,25 @@ $listQuestions = [
                     <input name="answer<?= $countQuestions ?>" form="questionsForm" class="answer answer-yes" type="radio" value="1">Да
                     <input name="answer<?= $countQuestions++ ?>" form="questionsForm" class="answer answer-no" type="radio" value="0">Нет
                 </div>
-<<<<<<< HEAD
-                <input name="answer<?= $countQuestions ?>" form="questionsForm" class="answer answer-yes" type="radio" value="1">Да
-                <input name="answer<?= $countQuestions++ ?>" form="questionsForm" class="answer answer-no" type="radio" value="0">Нет
-            </div>
-        <?php
-=======
             <?php
             }
             ?>
-                <form id="questionsForm" action="./student_testing.php" method="post">
-                    <input type="hidden" value="0">
-                    <input type="hidden" name="status" value="Данные отправлены">
-                    <input class="button button-submit" type="submit" name="postTestingData" value="Отправить тест">
-                </form>
-            <?php
+            <form id="questionsForm" action="./student_testing.php" method="post">
+                <input type="hidden" value="0">
+                <input type="hidden" name="status" value="Данные отправлены">
+                <input class="button button-submit" type="submit" name="postTestingData" value="Отправить тест">
+            </form>
+        <?php
         } else {
-            ?>
-                <p>
-                    Прохождение теста в данный момент заблокированно
-                </p>
-            <?php
->>>>>>> d4ae3e944ae8073c21779da426bd6d5d1d856c2f
+        ?>
+            <p>
+                Прохождение теста в данный момент заблокированно
+            </p>
+        <?php
         }
         ?>
     </div>
     <script src="script.js"></script>
 </body>
+
 </html>
