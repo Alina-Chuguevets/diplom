@@ -1,6 +1,106 @@
-.hide{
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html {
+    min-height: 100vh;
+}
+
+body {
+    /* overflow: hidden; */
+}
+
+.hide {
     display: none;
 }
 
-.test {
+.header,footer {
+    height: 65px;
+    padding: 10px;
+    width: 100%;
+    background-color: rgb(51, 51, 141);
+}
+
+.footer {
+    margin-top: 36px;
+    text-decoration: none;
+}
+
+.container {
+    width: 1070px;
+    margin: 0 auto;
+}
+
+.button {
+    display: block;
+    border: 1px solid black;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: rgb(51, 51, 141);
+    color: white;
+    text-decoration: none;
+    width: 49%;
+    text-align: center;
+}
+
+.button-submit {
+    margin-top: 10px;
+    font-size: 20px;
+}
+.button-active {
+    background-color: blueviolet;
+}
+
+.page-info, .toTop {
+    display: block;
+    color: white;
+    text-align: center;
+    font-size: 32px;
+}
+
+.info {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.headline {
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+}
+
+.questionRow {
+    justify-content: space-between;
+    height: auto;
+    display: flex;
+    margin: 5px;
+}
+
+.buttonsBlock {
+    display: flex;
+    justify-content: space-between;
+    margin: 16px 0;
+}
+
+.question {
+    flex: 1;
+    font-size: 20px;
+    border: 1px solid rgba(47, 63, 159, 0.6);
+    padding: 15px;
+}
+
+.answer {
+    border: 1px solid black;
+    width: 60px;
+    margin-left: 10px;
+}
+
+.answer-yes {
+    background-color: green;
+}
+.answer-no {
+    background-color: red;
 }
