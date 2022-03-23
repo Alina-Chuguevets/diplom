@@ -1,4 +1,48 @@
 <?php
+
+include_once('./config.php');
+
+class dbAPI{
+
+    public $db;
+
+    public function init(){
+        $this->$db = @mysqli_connect(HOST, USER, PASS, DB) or die('Нет соединения БД');
+        mysqli_set_charset($this->$db, 'utf8') or die('Не установлена кодировка соединения ');
+    }
+
+    /**
+     * Получение данных пользователя
+     */
+    public function getUserConfig($login, $password){
+        $sql = "SELECT * FROM users WHERE login = '".$login."' AND password = '".$password."'";
+        $res = mysqli_query($this->$db, $sql);
+        $data = null;
+        while($row = mysqli_fetch_assoc($res)){
+          $data[] = $row;
+        }
+        return $data[0];
+    }
+
+    /**
+     * Получение статуса теста
+     */
+    public function getStatusTest(){
+        $sql = "SELECT value FROM testsettings WHERE name = 'iswork'";
+        $res = mysqli_query($this->$db, $sql);
+        $data = null;
+        while($row = mysqli_fetch_assoc($res)){
+          $data[] = $row;
+        }
+        return (bool)$data[0]['value'];
+    }
+}
+
+
+
+
+
+
 //вывод массива 
 function print_arr ($arr){
     echo'<pre>' . print_r($arr,true) . '</pre>';
@@ -15,7 +59,6 @@ function get_tests(){
         $data[]=$row;
     }
     return $data;
-
 }
 
 //получение данных теста
