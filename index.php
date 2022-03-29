@@ -1,41 +1,18 @@
 <?php
-include_once './functions.php';
-
-$db = new dbAPI();
-$db->init();
+require_once './api.php';
 
 $status = '';
+$api = new API();
+$api->init();
 
+// Проверяем авторизован ли пользователь
 if($_COOKIE['auth'] !== null){
-	$user = $db->getUserConfigByToken($_COOKIE['auth']);
-	if($user == NULL){
-		die('Ошибка токена');
-	}
-	if($user['type'] == 0){
-		header('Location: ./student_testing.php');
-	} else {
-		header('Location: ./main_setting.php');
-	}
-	die();
+	$api->checkAuth();
 }
 
 // Если отправили запрос на авторизацию
 if($_POST['postAuth'] !== NULL){
-    $user = $db->getUserConfig($_POST['login'], $_POST['password']);
-	if($user == NULL){
-		$status = "Ошибка авторизации";
-	}
-	else {
-		$token = base64_encode($_POST['password']);
-		$db->createToken($user['id'], $token);
-		setcookie('auth', $token);
-		if($user['type'] == 0){
-			header('Location: ./student_testing.php');
-		} else {
-			header('Location: ./main_setting.php');
-		}
-		die();
-	}
+	$status = $api->auth($_POST['login'], $_POST['password']);
 }
 ?>
 
