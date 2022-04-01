@@ -10,12 +10,12 @@ $userParams = $db->getUserConfigByToken($_COOKIE['auth']);
 // 0 - ученик
 // 1 - психолог
 
-if($userParams['type'] !== '1'){
+if ($userParams['type'] !== '1') {
     die('Нет доступа к этой странице');
 };
 
-if($_POST['signOut'] !== null){
-    setcookie('auth', '');   
+if ($_POST['signOut'] !== null) {
+    setcookie('auth', '');
     header('Location: ./index.php');
 }
 
@@ -23,7 +23,7 @@ if ($_COOKIE['auth'] !== $userParams['token']) {
     header('Location: ./index.php');
 };
 
-if ($_GET['user'] == null){
+if ($_GET['user'] == null) {
     die('Не указан пользователь');
 }
 
@@ -53,17 +53,17 @@ $userTests = $db->getDataTest($userId);
 </head>
 
 <body>
-<nav class="navbar navbar-dark bg-primary">
-    <div class="container">
-        <a class="navbar-brand" href="#">
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">
                 Результаты тестирования
-        </a>
-        <form class="form-inline my-2 my-lg-0" action="./student_testing.php" method="post">
-            <span class="text-light" style="margin-right: 10px;"><?= $userParams['name'] ?></span>
-            <input class="btn btn-outline-light" type="submit" name="signOut" value="Выход">
-        </form>
-    </div>
-</nav>
+            </a>
+            <form class="form-inline my-2 my-lg-0" action="./student_testing.php" method="post">
+                <span class="text-light" style="margin-right: 10px;"><?= $userParams['name'] ?></span>
+                <input class="btn btn-outline-light" type="submit" name="signOut" value="Выход">
+            </form>
+        </div>
+    </nav>
     <div class="container">
 
         <div>
@@ -77,31 +77,34 @@ $userTests = $db->getDataTest($userId);
             <h3>Результаты тестирования ученика <?= $userInfo['name'] ?>(<?= $userInfo['class'] ?>)</h3>
         </div>
         <div class="mainScore">
-        <div>
-             <ul>
-                <?php
-                    if($userTests !== null){
-                    foreach($userTests as $test){
-                        ?>
-                            <li>Дата: (<?= substr($test['date'], 0, 4)."-".substr($test['date'], 4, 2)."-".substr($test['date'], 6, 2); ?>) Результат:  
-                            <font color="<?= $test['score'] > 50 ? 'green' : 'red' ?>">
-                                <span class="dataTest">
-                                    <?= $test['score'] ?>
-                                </span></li>
+            <div>
+                <ul>
+                    <?php
+                    if ($userTests !== null) {
+                        foreach ($userTests as $test) {
+                    ?>
+                            <li>Дата: (<span class="dateTest"><?= substr($test['date'], 0, 4) . "-" . substr($test['date'], 4, 2) . "-" . substr($test['date'], 6, 2); ?></span>) Результат:
+                                <font color="<?= $test['score'] > 50 ? 'green' : 'red' ?>">
+                                    <span class="dataTest">
+                                        <?= $test['score'] ?>
+                                    </span>
+                            </li>
                             </font>
-                        <?php
-                    }
+                    <?php
+                        }
                     } else {
                         echo "<span>Ученик не прошел ни одного теста</span>";
                     }
-                ?>
-            </ul>
-        </div>
-        <div>
-            <canvas id="canvas" class="canvas" width="600" height="400">
-                    
-            </canvas>
-        </div>
+                    ?>
+                </ul>
+            </div>
+            <div>
+                <h5 style="margin-bottom: 20px;">График прогноза зависимости:</h5>
+                <canvas id="canvas" class="canvas" width="600" height="400">
+
+                </canvas>
+                <div class="canvas__date">gdfgdfgfdgfdgdfgdf</div>
+            </div>
         </div>
     </div>
     <script>
@@ -117,16 +120,38 @@ $userTests = $db->getDataTest($userId);
         let point = 0;
         let d = 600 / data.length;
 
+        const pointsArray = [];
         data.each((index, element) => {
-            point = 200 - Math.round(Math.pow((1 - alfa), index) * $(element).html() + Math.pow((1 - alfa), data.length) * L)
-            if (index == 0){
+            point = 200 - Math.round(Math.pow((1 - alfa), index) * $(element).html() + Math.pow((1 - alfa), data.length) * L);
+            pointsArray.push([index * d, point]);
+            if (index == 0) {
                 ctx.moveTo(index * d, point);
+                ctx.arc(index * d, point, 2, 0, Math.PI * 2, true);
             } else {
                 ctx.lineTo(index * d, point);
+                ctx.arc(index * d, point, 2, 0, Math.PI * 2, true);
+
             }
         });
         ctx.stroke();
 
+        let associate = {};
+        let dates = $('.dateTest');
+        dates.each((index, element) => {
+            associate[`${pointsArray[index]}`] = $(element).html();
+        });
+
+        let canvasDate = $('.canvas__date');
+        $('canvas').on('mousemove', (e) => {
+            $this = $(e).target;
+            var x = e.pageX - e.target.offsetLeft,
+                y = e.pageY - e.target.offsetTop;
+            if (associate[`${x},${y}`] !== undefined) {
+                canvasDate.html(associate[`${x},${y}`]);
+                canvasDate.show();
+
+            }
+        })
     </script>
     <script src="script.js"></script>
 </body>

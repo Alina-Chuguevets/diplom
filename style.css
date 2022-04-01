@@ -212,7 +212,13 @@ h3 {
 }
 
 .canvas{
+    position: relative;
     border: 1px solid silver;
+}
+
+.canvas__date {
+    display: none;
+    position: absolute;
 }
 
 .mainScore{
