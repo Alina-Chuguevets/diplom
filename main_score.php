@@ -100,11 +100,18 @@ $userTests = $db->getDataTest($userId);
             </div>
             <div>
                 <h5 style="margin-bottom: 20px;">График прогноза зависимости:</h5>
+<<<<<<< HEAD
                 <div class="canvas-substrate">
                     <canvas id="canvas" class="canvas" width="600" height="400">
                     </canvas>
                     <div class="canvas-substrate__date"></div>
                 </div>
+=======
+                <canvas id="canvas" class="canvas" width="600" height="400">
+
+                </canvas>
+                <div class="canvas__date">gdfgdfgfdgfdgdfgdf</div>
+>>>>>>> 023940d3ac131e4ea19039c76586b172efa4cfeb
             </div>
         </div>
     </div>
@@ -142,13 +149,21 @@ $userTests = $db->getDataTest($userId);
             associate[`${pointsArray[index]}`] = $(element).html();
         });
 
+<<<<<<< HEAD
         let canvasDate = $('.canvas-substrate__date');
+=======
+        let canvasDate = $('.canvas__date');
+>>>>>>> 023940d3ac131e4ea19039c76586b172efa4cfeb
         $('canvas').on('mousemove', (e) => {
             $this = $(e).target;
             var x = e.pageX - e.target.offsetLeft,
                 y = e.pageY - e.target.offsetTop;
             if (associate[`${x},${y}`] !== undefined) {
+<<<<<<< HEAD
                 canvasDate.html(`Дата проведения теста: ${associate[`${x},${y}`]}`);
+=======
+                canvasDate.html(associate[`${x},${y}`]);
+>>>>>>> 023940d3ac131e4ea19039c76586b172efa4cfeb
                 canvasDate.show();
 
             }
