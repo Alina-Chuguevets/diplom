@@ -100,18 +100,11 @@ $userTests = $db->getDataTest($userId);
             </div>
             <div>
                 <h5 style="margin-bottom: 20px;">График прогноза зависимости:</h5>
-<<<<<<< HEAD
                 <div class="canvas-substrate">
                     <canvas id="canvas" class="canvas" width="600" height="400">
                     </canvas>
                     <div class="canvas-substrate__date"></div>
                 </div>
-=======
-                <canvas id="canvas" class="canvas" width="600" height="400">
-
-                </canvas>
-                <div class="canvas__date">gdfgdfgfdgfdgdfgdf</div>
->>>>>>> 023940d3ac131e4ea19039c76586b172efa4cfeb
             </div>
         </div>
     </div>
@@ -129,6 +122,12 @@ $userTests = $db->getDataTest($userId);
         let d = 600 / data.length;
 
         const pointsArray = [];
+        
+        let summX = 0;
+        let summY = 0;
+        let summX2 = 0;
+        let summXY = 0;
+
         data.each((index, element) => {
             point = 200 - Math.round(Math.pow((1 - alfa), index) * $(element).html() + Math.pow((1 - alfa), data.length) * L);
             pointsArray.push([index * d, point]);
@@ -138,34 +137,60 @@ $userTests = $db->getDataTest($userId);
             } else {
                 ctx.lineTo(index * d, point);
                 ctx.arc(index * d, point, 2, 0, Math.PI * 2, true);
-
             }
+            summX += index;
+            summY += point;
+            summX2 += index * index;
+            summXY += index * point;
         });
         ctx.stroke();
+
+        // Метод крамера
+        function determinant(a11,a12,a21,a22){
+            var d;
+            d = a11*a22-a12*a21  
+            return d
+        }
+ 
+    function model(a11, a12, a13, a21, a22, a23){
+        var d;
+        var d1,d2;
+        var x1,x2;
+        d = determinant(a13,a23,a12,a22);
+        d1 = determinant(a11,a21,a12,a22);
+        d2 = determinant(a11,a21,a13,a23);
+        x1 = d/d1;
+        x2 = d2/d1;
+        return x1, x2
+    }
+
+    let a, b = model(summX2, summX, summXY, summX, data.length, summY);
+
+    //Строим прогнозную модель
+    data.each((index, element) => {
+        let y = index * a + b;
+            if (index == 0) {
+                ctx.moveTo(index * d, y);
+                ctx.arc(index * d, y, 2, 0, Math.PI * 2, true);
+            } else {
+                ctx.lineTo(index * d, y);
+                ctx.arc(index * d, y, 2, 0, Math.PI * 2, true);
+            }
+        });
 
         let associate = {};
         let dates = $('.dateTest');
         dates.each((index, element) => {
             associate[`${pointsArray[index]}`] = $(element).html();
         });
-
-<<<<<<< HEAD
-        let canvasDate = $('.canvas-substrate__date');
-=======
         let canvasDate = $('.canvas__date');
->>>>>>> 023940d3ac131e4ea19039c76586b172efa4cfeb
         $('canvas').on('mousemove', (e) => {
             $this = $(e).target;
             var x = e.pageX - e.target.offsetLeft,
                 y = e.pageY - e.target.offsetTop;
             if (associate[`${x},${y}`] !== undefined) {
-<<<<<<< HEAD
-                canvasDate.html(`Дата проведения теста: ${associate[`${x},${y}`]}`);
-=======
                 canvasDate.html(associate[`${x},${y}`]);
->>>>>>> 023940d3ac131e4ea19039c76586b172efa4cfeb
                 canvasDate.show();
-
             }
         })
     </script>
