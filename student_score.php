@@ -6,12 +6,12 @@ $db->init();
 
 $userParams = $db->getUserConfigByToken($_COOKIE['auth']);
 
-if($_POST['signOut'] !== null){
-    setcookie('auth', '');   
+if ($_POST['signOut'] !== null) {
+    setcookie('auth', '');
     header('Location: ./index.php');
 };
 
-if($userParams['type'] !== '0'){
+if ($userParams['type'] !== '0') {
     die('Нет доступа к этой странице');
 };
 
@@ -41,17 +41,17 @@ $listScoreTesting = $db->getDataTest($userParams['id']);
 </head>
 
 <body>
-<nav class="navbar navbar-dark bg-primary">
-    <div class="container">
-        <a class="navbar-brand" href="#">
-               Результат тестирования
-        </a>
-        <form class="form-inline my-2 my-lg-0" action="./student_testing.php" method="post">
-            <span class="text-light" style="margin-right: 10px;"><?= $userParams['name'] ?>(<?= $userParams['class'] ?>)</span>
-            <input class="btn btn-outline-light" type="submit" name="signOut" value="Выход">
-        </form>
-    </div>
-</nav>
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                Результат тестирования
+            </a>
+            <form class="form-inline my-2 my-lg-0" action="./student_testing.php" method="post">
+                <span class="text-light" style="margin-right: 10px;"><?= $userParams['name'] ?>(<?= $userParams['class'] ?>)</span>
+                <input class="btn btn-outline-light" type="submit" name="signOut" value="Выход">
+            </form>
+        </div>
+    </nav>
     <div class="container">
         <div>
             <div class="buttonsBlock">
@@ -62,20 +62,20 @@ $listScoreTesting = $db->getDataTest($userParams['id']);
         <div>
         </div>
         <div class="results-list">
-            <?php 
-            if($listScoreTesting !== null){
-            foreach ($listScoreTesting as $test) {
-                $testCorrectClass = $test['score'] > 50 ? 'btn-success' : 'btn-warning' ?>
-                <div class="result">
-                    <div class="result-date"><?= substr($test['date'], 0, 4)."-".substr($test['date'], 4, 2)."-".substr($test['date'], 6, 2); ?></div>
-                    <div class="result-score <?= $testCorrectClass ?>"><?= $test['score'] / 2 ?>%</div>
-                </div>
-                <hr>
-            <? }
+            <?php
+            if ($listScoreTesting !== null) {
+                foreach ($listScoreTesting as $test) {
+                    $testCorrectClass = $test['score'] > 50 ? 'btn-success' : 'btn-warning' ?>
+                    <div class="result">
+                        <div class="result-date"><?= substr($test['date'], 0, 4) . "-" . substr($test['date'], 4, 2) . "-" . substr($test['date'], 6, 2); ?></div>
+                        <div class="result-score <?= $testCorrectClass ?>"><?= $test['score'] / 2 ?>%</div>
+                    </div>
+                    <hr>
+                <? }
             } else {
                 ?>
-                    <span>Результатов нет</span>
-                <?php
+                <span>Результатов нет</span>
+            <?php
             } ?>
         </div>
     </div>
