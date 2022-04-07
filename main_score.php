@@ -101,7 +101,7 @@ $userTests = $db->getDataTest($userId);
             <div>
                 <h5 style="margin-bottom: 20px;">График прогноза зависимости:</h5>
                 <div class="canvas-substrate">
-                    <canvas id="canvas" class="canvas" width="600" height="400">
+                    <canvas id="canvas" class="canvas" width="630" height="400">
                     </canvas>
                     <div class="canvas-substrate__date"></div>
                 </div>
@@ -138,12 +138,13 @@ $userTests = $db->getDataTest($userId);
                 ctx.lineTo(index * d, point);
                 ctx.arc(index * d, point, 2, 0, Math.PI * 2, true);
             }
+            console.log('x: ' + index * d + 'y: ' + point )
             summX += index;
             summY += point;
             summX2 += index * index;
             summXY += index * point;
         });
-        ctx.stroke();
+        
 
         // Метод крамера
         function determinant(a11,a12,a21,a22){
@@ -161,14 +162,17 @@ $userTests = $db->getDataTest($userId);
         d2 = determinant(a11,a21,a13,a23);
         x1 = d/d1;
         x2 = d2/d1;
-        return x1, x2
+        return [x1, x2]
     }
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.strokeStyle = "#138CCB";
 
-    let a, b = model(summX2, summX, summXY, summX, data.length, summY);
-
-    //Строим прогнозную модель
+    let abArray = model(summX2, summX, summXY, summX, data.length, summY);
+    // Строим прогнозную модель
     data.each((index, element) => {
-        let y = index * a + b;
+        let y = index * abArray[0] + abArray[1];
+        console.log(y);
             if (index == 0) {
                 ctx.moveTo(index * d, y);
                 ctx.arc(index * d, y, 2, 0, Math.PI * 2, true);
@@ -177,7 +181,13 @@ $userTests = $db->getDataTest($userId);
                 ctx.arc(index * d, y, 2, 0, Math.PI * 2, true);
             }
         });
+        let y = (data.length + 1) * abArray[0] + abArray[1];
+        console.log(y);
 
+                ctx.lineTo((data.length + 1) * d, y);
+                ctx.arc((data.length + 1) * d, y, 2, 0, Math.PI * 2, true);
+
+        ctx.stroke();
         let associate = {};
         let dates = $('.dateTest');
         dates.each((index, element) => {
