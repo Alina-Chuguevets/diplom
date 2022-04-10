@@ -111,6 +111,17 @@ $userTests = $db->getDataTest($userId);
     <script>
         var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext("2d");
+
+        //Ось координат
+        ctx.beginPath();
+        ctx.lineWidth = "2";
+        ctx.strokeStyle = "LightGray";
+        ctx.moveTo(315, 0);
+        ctx.lineTo(315, 400);
+        ctx.moveTo(0, 200);
+        ctx.lineTo(630, 200);
+        ctx.stroke();
+
         ctx.strokeStyle = 'navy';
         ctx.lineWidth = 3.0;
         ctx.beginPath();
@@ -121,16 +132,34 @@ $userTests = $db->getDataTest($userId);
         let point = 0;
         let d = 600 / data.length;
 
-        const pointsArray = [];
-        
         let summX = 0;
         let summY = 0;
         let summX2 = 0;
         let summXY = 0;
 
+        let associate = {};
+        let dates = $('.dateTest');
+        let datesArray = [];
+        dates.each((index, element) => {
+            datesArray.push($(element).html());
+        });
+
+        let counter = 0;
+        for (const key of datesArray) {
+            associate[counter] = {
+                date: key,
+                x: 0,
+            };
+            counter++;
+        }
+        let pointsArray = [];
         data.each((index, element) => {
             point = 200 - Math.round(Math.pow((1 - alfa), index) * $(element).html() + Math.pow((1 - alfa), data.length) * L);
-            pointsArray.push([index * d, point]);
+            for (let k = -10; k < 10; k++) {
+                pointsArray.push(Math.floor(index * d) + k);
+            }
+            associate[index]['x'] = pointsArray;
+            pointsArray = [];
             if (index == 0) {
                 ctx.moveTo(index * d, point);
                 ctx.arc(index * d, point, 2, 0, Math.PI * 2, true);
@@ -138,41 +167,37 @@ $userTests = $db->getDataTest($userId);
                 ctx.lineTo(index * d, point);
                 ctx.arc(index * d, point, 2, 0, Math.PI * 2, true);
             }
-            console.log('x: ' + index * d + 'y: ' + point )
             summX += index;
             summY += point;
             summX2 += index * index;
             summXY += index * point;
         });
-        
-
         // Метод крамера
-        function determinant(a11,a12,a21,a22){
+        function determinant(a11, a12, a21, a22) {
             var d;
-            d = a11*a22-a12*a21  
+            d = a11 * a22 - a12 * a21
             return d
         }
- 
-    function model(a11, a12, a13, a21, a22, a23){
-        var d;
-        var d1,d2;
-        var x1,x2;
-        d = determinant(a13,a23,a12,a22);
-        d1 = determinant(a11,a21,a12,a22);
-        d2 = determinant(a11,a21,a13,a23);
-        x1 = d/d1;
-        x2 = d2/d1;
-        return [x1, x2]
-    }
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.strokeStyle = "#138CCB";
 
-    let abArray = model(summX2, summX, summXY, summX, data.length, summY);
-    // Строим прогнозную модель
-    data.each((index, element) => {
-        let y = index * abArray[0] + abArray[1];
-        console.log(y);
+        function model(a11, a12, a13, a21, a22, a23) {
+            var d;
+            var d1, d2;
+            var x1, x2;
+            d = determinant(a13, a23, a12, a22);
+            d1 = determinant(a11, a21, a12, a22);
+            d2 = determinant(a11, a21, a13, a23);
+            x1 = d / d1;
+            x2 = d2 / d1;
+            return [x1, x2]
+        }
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.strokeStyle = "#138CCB";
+
+        let abArray = model(summX2, summX, summXY, summX, data.length, summY);
+        // Строим прогнозную модель
+        data.each((index, element) => {
+            let y = index * abArray[0] + abArray[1];
             if (index == 0) {
                 ctx.moveTo(index * d, y);
                 ctx.arc(index * d, y, 2, 0, Math.PI * 2, true);
@@ -182,25 +207,19 @@ $userTests = $db->getDataTest($userId);
             }
         });
         let y = (data.length + 1) * abArray[0] + abArray[1];
-        console.log(y);
 
-                ctx.lineTo((data.length + 1) * d, y);
-                ctx.arc((data.length + 1) * d, y, 2, 0, Math.PI * 2, true);
-
+        ctx.lineTo((data.length + 1) * d, y);
+        ctx.arc((data.length + 1) * d, y, 2, 0, Math.PI * 2, true);
         ctx.stroke();
-        let associate = {};
-        let dates = $('.dateTest');
-        dates.each((index, element) => {
-            associate[`${pointsArray[index]}`] = $(element).html();
-        });
-        let canvasDate = $('.canvas__date');
+
+        let currentMax = 0;
+        let canvasDate = $('.canvas-substrate__date');
         $('canvas').on('mousemove', (e) => {
-            $this = $(e).target;
-            var x = e.pageX - e.target.offsetLeft,
-                y = e.pageY - e.target.offsetTop;
-            if (associate[`${x},${y}`] !== undefined) {
-                canvasDate.html(associate[`${x},${y}`]);
-                canvasDate.show();
+            var x = e.pageX - e.target.offsetLeft;
+            for (const key in associate) {
+                if (associate[key]['x'].includes(x)) {
+                    canvasDate.html(`Дата проведенного теста: ${associate[key]['date']}`);
+                };
             }
         })
     </script>
